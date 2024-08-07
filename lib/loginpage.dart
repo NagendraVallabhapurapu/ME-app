@@ -10,11 +10,22 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _useridController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false; // State to track loading status
 
-  void _login() {
+  void _login() async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true; // Set loading state to true
+      });
+
       String userid = _useridController.text;
       String password = _passwordController.text;
+
+      await Future.delayed(Duration(seconds: 1)); // Simulate a network delay
+
+      setState(() {
+        _isLoading = false; // Set loading state to false
+      });
 
       if (userid == 'Admin@ME' && password == 'admin@123') {
         // Perform successful login action
@@ -65,9 +76,9 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: screenHeight * 0.1), // Space from top
+                SizedBox(height: screenHeight * 0.1),
                 Image.asset(
-                  'logo.png', // Ensure this path is correct and registered in pubspec.yaml
+                  'logo.png',
                   height: screenHeight * 0.15,
                 ),
                 SizedBox(height: screenHeight * 0.02),
@@ -96,8 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           borderRadius: BorderRadius.circular(12.0),
                         ),
                         child: Padding(
-                          padding: EdgeInsets.all(
-                              screenWidth * 0.04), // Responsive padding
+                          padding: EdgeInsets.all(screenWidth * 0.04),
                           child: Form(
                             key: _formKey,
                             child: Column(
@@ -138,17 +148,24 @@ class _LoginScreenState extends State<LoginScreen> {
                                   },
                                 ),
                                 SizedBox(height: screenHeight * 0.05),
-                                ElevatedButton(
-                                  onPressed: _login,
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 85, 8, 8),
-                                  ),
-                                  child: Text(
-                                    'Login',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
+                                _isLoading
+                                    ? CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                          Color.fromARGB(255, 138, 16, 8),
+                                        ),
+                                      ) // Show loading indicator
+                                    : ElevatedButton(
+                                        onPressed: _login,
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              Color.fromARGB(255, 85, 8, 8),
+                                        ),
+                                        child: Text(
+                                          'Login',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
                               ],
                             ),
                           ),
@@ -156,7 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     );
                   },
-                ), // Space from bottom
+                ),
               ],
             ),
           ),

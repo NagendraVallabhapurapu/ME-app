@@ -1,22 +1,28 @@
 import 'package:employee_login/loginpage.dart';
+import 'package:employee_login/profilepage.dart';
 import 'package:flutter/material.dart';
 
-// Define the LoginPage widget
-class LoginPage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Login Page'),
-      ),
-      body: Center(
-        child: Text('Login Page Content'),
-      ),
-    );
-  }
+  _HomePageState createState() => _HomePageState();
 }
 
-class HomePage extends StatelessWidget {
+class _HomePageState extends State<HomePage> {
+  bool _isLoading = true; // State to track loading status
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData(); // Simulate data loading
+  }
+
+  Future<void> _loadData() async {
+    await Future.delayed(Duration(seconds: 1)); // Simulate a network delay
+    setState(() {
+      _isLoading = false; // Set loading state to false after loading
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +75,7 @@ class HomePage extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     backgroundImage: AssetImage(
-                        'profile_image.png'), // Replace with actual profile image asset
+                        'propic.png'), // Replace with actual profile image asset
                     radius: 30.0,
                   ),
                   SizedBox(width: 16.0),
@@ -90,14 +96,16 @@ class HomePage extends StatelessWidget {
               title: Text('Profile'),
               onTap: () {
                 // Handle profile tap
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfilePage()),
+                );
               },
             ),
             ListTile(
               leading: Icon(Icons.settings),
               title: Text('Settings'),
               onTap: () {
-                // Handle settings tap
                 Navigator.pop(context);
               },
             ),
@@ -105,7 +113,6 @@ class HomePage extends StatelessWidget {
               leading: Icon(Icons.logout),
               title: Text('Logout'),
               onTap: () {
-                // Handle logout and navigate to LoginPage
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => LoginScreen()),
@@ -115,32 +122,39 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          double width = constraints.maxWidth;
-          int columns = width > 600 ? 2 : 1;
-          double childAspectRatio =
-              width > 600 ? 3 : 2.5; // Adjust aspect ratio for mobile
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                    Color.fromARGB(255, 138, 16, 8)),
+              ),
+            )
+          : LayoutBuilder(
+              builder: (context, constraints) {
+                double width = constraints.maxWidth;
+                int columns = width > 600 ? 2 : 1;
+                double childAspectRatio =
+                    width > 600 ? 3 : 2; // Adjust aspect ratio for mobile
 
-          return GridView.builder(
-            padding: EdgeInsets.all(8.0),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: columns,
-              crossAxisSpacing: 8.0,
-              mainAxisSpacing: 8.0,
-              childAspectRatio: childAspectRatio,
+                return GridView.builder(
+                  padding: EdgeInsets.all(8.0),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: columns,
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 8.0,
+                    childAspectRatio: childAspectRatio,
+                  ),
+                  itemCount: _cards.length,
+                  itemBuilder: (context, index) {
+                    return _buildCard(
+                      _cards[index]['title'],
+                      _cards[index]['content'],
+                      _cards[index]['icon'],
+                    );
+                  },
+                );
+              },
             ),
-            itemCount: _cards.length,
-            itemBuilder: (context, index) {
-              return _buildCard(
-                _cards[index]['title'],
-                _cards[index]['content'],
-                _cards[index]['icon'],
-              );
-            },
-          );
-        },
-      ),
     );
   }
 
