@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:io';
+import 'package:employee_login/hierarchical.dart';
 import 'package:employee_login/homepage.dart';
 import 'package:employee_login/loginpage.dart';
 
@@ -10,7 +13,7 @@ class ProfilePage extends StatelessWidget {
       'Employee ID': 'ME123456',
       'Email': 'user@gmail.com',
       'Phone': '+1234567890',
-      'Designation': 'Team Leader',
+      'Designation': 'Manger',
       'Department': 'AXIS',
       'Reporting Officer': 'Officer',
       'Date of Joining': '2024-01-01',
@@ -85,21 +88,19 @@ class ProfilePage extends StatelessWidget {
       drawer: Drawer(
         child: Column(
           children: <Widget>[
-            // Profile section
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Color(0xFF8A1008), // Ensure this color is correct
+                color: Color(0xFF8A1008),
               ),
               child: Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage:
-                        AssetImage('propic.png'), // Ensure this asset exists
+                    backgroundImage: AssetImage('propic.png'),
                     radius: 30.0,
                   ),
                   SizedBox(width: 16.0),
                   Text(
-                    'User Name', // Replace with actual user name
+                    'User Name',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -109,7 +110,6 @@ class ProfilePage extends StatelessWidget {
                 ],
               ),
             ),
-            // List of menu items
             ListTile(
               leading: Icon(Icons.home),
               title: Text('Home'),
@@ -117,7 +117,7 @@ class ProfilePage extends StatelessWidget {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => HomePage()),
-                ); // Ensure route is defined
+                );
               },
             ),
             ListTile(
@@ -127,7 +127,7 @@ class ProfilePage extends StatelessWidget {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => ProfilePage()),
-                ); // Ensure route is defined
+                );
               },
             ),
             ListTile(
@@ -146,10 +146,7 @@ class ProfilePage extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color(0xFFFFFACD), // Light Yellow
-              Color(0xFFFFFFFF) // White
-            ],
+            colors: [Color(0xFFFFFACD), Color(0xFFFFFFFF)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -178,8 +175,7 @@ class ProfilePage extends StatelessWidget {
                         ? constraints.maxWidth * 0.1
                         : 50.0;
                     double spacing = constraints.maxWidth * 0.05;
-                    double fontSize =
-                        isMobile ? 14.0 : 16.0; // Adjust font size
+                    double fontSize = isMobile ? 14.0 : 16.0;
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -231,11 +227,24 @@ class ProfilePage extends StatelessWidget {
                                           ),
                                         ),
                                         SizedBox(height: 8.0),
-                                        Text(
-                                          profileData['Designation']!,
-                                          style: TextStyle(
-                                            fontSize: isMobile ? 16.0 : 18.0,
-                                            color: Colors.grey[600],
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    HierarchicalPage(),
+                                              ),
+                                            );
+                                          },
+                                          child: Text(
+                                            profileData['Designation']!,
+                                            style: TextStyle(
+                                              fontSize: isMobile ? 16.0 : 18.0,
+                                              color: Colors.grey[600],
+                                              decoration:
+                                                  TextDecoration.underline,
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -245,7 +254,7 @@ class ProfilePage extends StatelessWidget {
                                     icon: Icon(Icons.edit_document,
                                         color: reddishBrown),
                                     onPressed: () {
-                                      // Implement edit profile functionality
+                                      _showEditDialog(context);
                                     },
                                   ),
                                 ],
@@ -302,7 +311,6 @@ class ProfilePage extends StatelessWidget {
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: fontSize,
-                                                    color: reddishBrown,
                                                   ),
                                                 ),
                                               ),
@@ -313,7 +321,6 @@ class ProfilePage extends StatelessWidget {
                                                   textAlign: TextAlign.end,
                                                   style: TextStyle(
                                                     fontSize: fontSize,
-                                                    color: Colors.black,
                                                   ),
                                                 ),
                                               ),
@@ -336,7 +343,6 @@ class ProfilePage extends StatelessWidget {
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: fontSize,
-                                              color: reddishBrown,
                                             ),
                                           ),
                                           trailing: Text(
@@ -344,7 +350,6 @@ class ProfilePage extends StatelessWidget {
                                             textAlign: TextAlign.end,
                                             style: TextStyle(
                                               fontSize: fontSize,
-                                              color: Colors.black,
                                             ),
                                           ),
                                         );
@@ -362,6 +367,99 @@ class ProfilePage extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+
+  void _showEditDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return EditProfileDialog();
+      },
+    );
+  }
+}
+
+class EditProfileDialog extends StatefulWidget {
+  @override
+  _EditProfileDialogState createState() => _EditProfileDialogState();
+}
+
+class _EditProfileDialogState extends State<EditProfileDialog> {
+  File? _selectedImage;
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController.text = 'user@gmail.com';
+    _phoneController.text = '+1234567890';
+  }
+
+  Future<void> _pickImage() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+    );
+
+    if (result != null) {
+      setState(() {
+        _selectedImage = File(result.files.single.path!);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Edit Profile'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GestureDetector(
+            onTap: _pickImage,
+            child: CircleAvatar(
+              radius: 50,
+              backgroundImage: _selectedImage != null
+                  ? FileImage(_selectedImage!)
+                  : AssetImage('propic.png') as ImageProvider,
+              child: _selectedImage == null
+                  ? Icon(Icons.add_a_photo,
+                      size: 30, color: const Color.fromARGB(255, 249, 248, 248))
+                  : null,
+            ),
+          ),
+          SizedBox(height: 16.0),
+          TextField(
+            controller: _emailController,
+            decoration: InputDecoration(
+              labelText: 'Email',
+            ),
+          ),
+          SizedBox(height: 8.0),
+          TextField(
+            controller: _phoneController,
+            decoration: InputDecoration(
+              labelText: 'Mobile',
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          child: Text('Cancel'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        ElevatedButton(
+          child: Text('Update'),
+          onPressed: () {
+            // Handle save logic here
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
     );
   }
 }
