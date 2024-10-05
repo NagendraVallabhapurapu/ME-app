@@ -1,8 +1,8 @@
-import 'package:employee_login/loginpage.dart';
-import 'package:employee_login/profilepage.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -17,7 +17,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _loadData() async {
-    await Future.delayed(Duration(seconds: 1)); // Simulate a network delay
+    await Future.delayed(
+        const Duration(seconds: 1)); // Simulate a network delay
     setState(() {
       _isLoading = false; // Set loading state to false after loading
     });
@@ -27,9 +28,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
+        preferredSize: const Size.fromHeight(kToolbarHeight),
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF732F14), Color(0xFFFAD02E)],
               begin: Alignment.topLeft,
@@ -41,7 +42,7 @@ class _HomePageState extends State<HomePage> {
             elevation: 0,
             leading: Builder(
               builder: (BuildContext context) => IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.menu,
                   color: Colors.white,
                 ),
@@ -53,7 +54,7 @@ class _HomePageState extends State<HomePage> {
             ),
             actions: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Image.asset(
                   'logo.png',
                   fit: BoxFit.contain,
@@ -67,7 +68,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: <Widget>[
             // Profile section
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Color.fromARGB(255, 138, 16, 8),
               ),
@@ -92,42 +93,33 @@ class _HomePageState extends State<HomePage> {
             ),
             // List of menu items
             ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                );
+                Navigator.pushNamed(context, '/home');
               },
             ),
             ListTile(
-              leading: Icon(Icons.person),
-              title: Text('Profile'),
+              leading: const Icon(Icons.person),
+              title: const Text('Profile'),
               onTap: () {
                 // Handle profile tap
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfilePage()),
-                );
+                Navigator.pushNamed(context, '/profile');
               },
             ),
 
             ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Logout'),
+              leading: const Icon(Icons.logout),
+              title: const Text('Logout'),
               onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                );
+                Navigator.pushNamed(context, '/');
               },
             ),
           ],
         ),
       ),
       body: _isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(
                     Color.fromARGB(255, 138, 16, 8)),
@@ -141,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                     width > 600 ? 3 : 2; // Adjust aspect ratio for mobile
 
                 return GridView.builder(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: columns,
                     crossAxisSpacing: 8.0,
@@ -194,7 +186,7 @@ class _HomePageState extends State<HomePage> {
     return Card(
       elevation: 5,
       child: Container(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

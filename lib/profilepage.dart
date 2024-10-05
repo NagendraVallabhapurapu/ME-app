@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import 'package:employee_login/hierarchical.dart';
-import 'package:employee_login/homepage.dart';
-import 'package:employee_login/loginpage.dart';
 
 class ProfilePage extends StatelessWidget {
   Future<Map<String, String>> _loadProfileData() async {
-    await Future.delayed(Duration(seconds: 1)); // Simulate a network delay
+    await Future.delayed(const Duration(seconds: 1));
     return {
       'Name': 'User Name',
       'Employee ID': 'ME123456',
@@ -43,7 +40,9 @@ class ProfilePage extends StatelessWidget {
     'Blood Group': Icons.health_and_safety,
   };
 
-  final Color reddishBrown = Color(0xFF8A1008);
+  final Color reddishBrown = const Color(0xFF8A1008);
+
+  ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +53,7 @@ class ProfilePage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF732F14), Color(0xFFFAD02E)],
               begin: Alignment.topLeft,
@@ -65,7 +64,7 @@ class ProfilePage extends StatelessWidget {
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
-              icon: Icon(Icons.menu),
+              icon: const Icon(Icons.menu),
               color: Colors.white,
               onPressed: () {
                 Scaffold.of(context).openDrawer();
@@ -88,7 +87,7 @@ class ProfilePage extends StatelessWidget {
       drawer: Drawer(
         child: Column(
           children: <Widget>[
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Color(0xFF8A1008),
               ),
@@ -111,40 +110,31 @@ class ProfilePage extends StatelessWidget {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
               onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                );
+                Navigator.pushNamed(context, '/home');
               },
             ),
             ListTile(
-              leading: Icon(Icons.person),
-              title: Text('Profile'),
+              leading: const Icon(Icons.person),
+              title: const Text('Profile'),
               onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfilePage()),
-                );
+                Navigator.pushNamed(context, '/profile');
               },
             ),
             ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Logout'),
+              leading: const Icon(Icons.logout),
+              title: const Text('Logout'),
               onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                );
+                Navigator.pushNamed(context, '/');
               },
             ),
           ],
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Color(0xFFFFFACD), Color(0xFFFFFFFF)],
             begin: Alignment.topCenter,
@@ -155,13 +145,13 @@ class ProfilePage extends StatelessWidget {
           future: _loadProfileData(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF8A1008)),
                 ),
               );
             } else if (snapshot.hasError) {
-              return Center(child: Text('Error loading profile data'));
+              return const Center(child: Text('Error loading profile data'));
             } else {
               final profileData = snapshot.data!;
               return Padding(
@@ -186,7 +176,7 @@ class ProfilePage extends StatelessWidget {
                             Expanded(
                               flex: isMobile ? 2 : 1,
                               child: Container(
-                                padding: EdgeInsets.all(12.0),
+                                padding: const EdgeInsets.all(12.0),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(8.0),
@@ -197,7 +187,7 @@ class ProfilePage extends StatelessWidget {
                                       color: Colors.grey.withOpacity(0.2),
                                       spreadRadius: 2,
                                       blurRadius: 8,
-                                      offset: Offset(0, 4),
+                                      offset: const Offset(0, 4),
                                     ),
                                   ],
                                 ),
@@ -209,13 +199,13 @@ class ProfilePage extends StatelessWidget {
                                       decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(8.0),
-                                        image: DecorationImage(
+                                        image: const DecorationImage(
                                           image: AssetImage('propic.png'),
                                           fit: BoxFit.cover,
                                         ),
                                       ),
                                     ),
-                                    SizedBox(width: 12.0),
+                                    const SizedBox(width: 12.0),
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
@@ -230,16 +220,11 @@ class ProfilePage extends StatelessWidget {
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
-                                          SizedBox(height: 4.0),
+                                          const SizedBox(height: 4.0),
                                           GestureDetector(
                                             onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      HierarchicalPage(),
-                                                ),
-                                              );
+                                              Navigator.pushNamed(
+                                                  context, '/hierarchical');
                                             },
                                             child: Text(
                                               profileData['Designation']!,
@@ -269,7 +254,7 @@ class ProfilePage extends StatelessWidget {
                             ),
                             if (!isMobile) SizedBox(width: spacing),
                             if (!isMobile)
-                              Container(
+                              SizedBox(
                                 width: logoWidth,
                                 child: Image.asset(
                                   'logo.png',
@@ -278,7 +263,7 @@ class ProfilePage extends StatelessWidget {
                               ),
                           ],
                         ),
-                        SizedBox(height: 12.0),
+                        const SizedBox(height: 12.0),
                         Expanded(
                           child: LayoutBuilder(
                             builder: (context, constraints) {
@@ -286,7 +271,7 @@ class ProfilePage extends StatelessWidget {
                               return isDesktop
                                   ? GridView.builder(
                                       gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 3,
                                         crossAxisSpacing: 16.0,
                                         mainAxisSpacing: 16.0,
@@ -301,7 +286,7 @@ class ProfilePage extends StatelessWidget {
                                         IconData icon =
                                             detailIcons[key] ?? Icons.info;
                                         return Container(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               vertical: 12.0, horizontal: 16.0),
                                           decoration: BoxDecoration(
                                             border: Border(
@@ -315,7 +300,7 @@ class ProfilePage extends StatelessWidget {
                                           child: Row(
                                             children: [
                                               Icon(icon, color: reddishBrown),
-                                              SizedBox(width: 12.0),
+                                              const SizedBox(width: 12.0),
                                               Text(
                                                 '$key: ',
                                                 style: TextStyle(
@@ -349,7 +334,7 @@ class ProfilePage extends StatelessWidget {
                                         IconData icon =
                                             detailIcons[key] ?? Icons.info;
                                         return Container(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               vertical: 8.0, horizontal: 16.0),
                                           decoration: BoxDecoration(
                                             border: Border(
@@ -363,7 +348,7 @@ class ProfilePage extends StatelessWidget {
                                           child: Row(
                                             children: [
                                               Icon(icon, color: reddishBrown),
-                                              SizedBox(width: 12.0),
+                                              const SizedBox(width: 12.0),
                                               Text(
                                                 '$key: ',
                                                 style: TextStyle(
@@ -412,12 +397,12 @@ class ProfilePage extends StatelessWidget {
         final avatarRadius = isMobile ? 50.0 : 60.0; // Adjusted radius
 
         return AlertDialog(
-          title: Text('Edit Profile'),
+          title: const Text('Edit Profile'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Edit profile picture:'),
-                SizedBox(height: 8.0),
+                const Text('Edit profile picture:'),
+                const SizedBox(height: 8.0),
                 GestureDetector(
                   onTap: () async {
                     FilePickerResult? result = await FilePicker.platform
@@ -432,29 +417,29 @@ class ProfilePage extends StatelessWidget {
                     backgroundColor: Colors.grey[300],
                     backgroundImage: newProfileImage != null
                         ? FileImage(newProfileImage!)
-                        : AssetImage(
+                        : const AssetImage(
                             'propic.png',
                           ) as ImageProvider,
-                    child: Align(
+                    child: const Align(
                       alignment: Alignment.center,
                       child:
                           Icon(Icons.camera_alt_rounded, color: Colors.white),
                     ),
                   ),
                 ),
-                SizedBox(height: 12.0),
+                const SizedBox(height: 12.0),
                 TextFormField(
                   initialValue: 'user@gmail.com',
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Email ID',
                     prefixIcon: Icon(Icons.email),
                     border: OutlineInputBorder(),
                   ),
                 ),
-                SizedBox(height: 12.0),
+                const SizedBox(height: 12.0),
                 TextFormField(
                   initialValue: '+1234567890',
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Mobile Number',
                     prefixIcon: Icon(Icons.phone),
                     border: OutlineInputBorder(),
@@ -465,13 +450,13 @@ class ProfilePage extends StatelessWidget {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             ElevatedButton(
-              child: Text('Save'),
+              child: const Text('Save'),
               onPressed: () {
                 // Save the edited data
                 Navigator.of(context).pop();

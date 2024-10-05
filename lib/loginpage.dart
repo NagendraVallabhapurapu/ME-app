@@ -1,7 +1,8 @@
-import 'package:employee_login/homepage.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -21,7 +22,8 @@ class _LoginScreenState extends State<LoginScreen> {
       String userid = _useridController.text;
       String password = _passwordController.text;
 
-      await Future.delayed(Duration(seconds: 1)); // Simulate a network delay
+      await Future.delayed(
+          const Duration(seconds: 1)); // Simulate a network delay
 
       setState(() {
         _isLoading = false; // Set loading state to false
@@ -30,16 +32,13 @@ class _LoginScreenState extends State<LoginScreen> {
       if (userid == 'Admin@ME' && password == 'admin@123') {
         // Perform successful login action
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login successful!')),
+          const SnackBar(content: Text('Login successful!')),
         );
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
+        Navigator.pushNamed(context, '/home');
       } else {
         // Show error message
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Invalid user ID or password')),
+          const SnackBar(content: Text('Invalid user ID or password')),
         );
       }
     }
@@ -59,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
         fit: StackFit.expand,
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
                   Color.fromARGB(255, 255, 255, 180),
@@ -87,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontSize,
-                    color: Color.fromARGB(255, 131, 2, 2),
+                    color: const Color.fromARGB(255, 131, 2, 2),
                   ),
                 ),
                 SizedBox(height: screenHeight * 0.02),
@@ -123,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 SizedBox(height: screenHeight * 0.02),
                                 TextFormField(
                                   controller: _useridController,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     labelText: 'User ID',
                                   ),
                                   validator: (value) {
@@ -136,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 SizedBox(height: screenHeight * 0.02),
                                 TextFormField(
                                   controller: _passwordController,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     labelText: 'Password',
                                   ),
                                   obscureText: true,
@@ -149,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 SizedBox(height: screenHeight * 0.05),
                                 _isLoading
-                                    ? CircularProgressIndicator(
+                                    ? const CircularProgressIndicator(
                                         valueColor:
                                             AlwaysStoppedAnimation<Color>(
                                           Color.fromARGB(255, 138, 16, 8),
@@ -158,10 +157,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                     : ElevatedButton(
                                         onPressed: _login,
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              Color.fromARGB(255, 85, 8, 8),
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 85, 8, 8),
                                         ),
-                                        child: Text(
+                                        child: const Text(
                                           'Login',
                                           style: TextStyle(color: Colors.white),
                                         ),

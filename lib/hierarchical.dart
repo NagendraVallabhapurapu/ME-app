@@ -1,11 +1,14 @@
+import 'package:employee_login/Employeepage.dart';
 import 'package:flutter/material.dart';
 import 'package:employee_login/homepage.dart';
 import 'package:employee_login/loginpage.dart';
 import 'package:employee_login/profilepage.dart';
 
-final reddishBrown = Color(0xFF6D3F2E);
+final reddishBrown = const Color(0xFF6D3F2E);
 
 class HierarchicalPage extends StatefulWidget {
+  const HierarchicalPage({super.key});
+
   @override
   _HierarchicalPageState createState() => _HierarchicalPageState();
 }
@@ -20,9 +23,9 @@ class _HierarchicalPageState extends State<HierarchicalPage> {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
+        preferredSize: const Size.fromHeight(kToolbarHeight),
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF732F14), Color(0xFFFAD02E)],
               begin: Alignment.topLeft,
@@ -34,7 +37,7 @@ class _HierarchicalPageState extends State<HierarchicalPage> {
             elevation: 0,
             leading: Builder(
               builder: (BuildContext context) => IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.menu,
                   color: Colors.white,
                 ),
@@ -45,7 +48,7 @@ class _HierarchicalPageState extends State<HierarchicalPage> {
             ),
             actions: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Image.asset(
                   'logo.png',
                   fit: BoxFit.contain,
@@ -59,13 +62,13 @@ class _HierarchicalPageState extends State<HierarchicalPage> {
         child: Column(
           children: <Widget>[
             DrawerHeader(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color(0xFF8A1008),
               ),
               child: Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: AssetImage('propic.png'),
+                    backgroundImage: const AssetImage('propic.png'),
                     radius: isMobile ? 20.0 : 30.0,
                   ),
                   SizedBox(width: isMobile ? 8.0 : 16.0),
@@ -87,7 +90,7 @@ class _HierarchicalPageState extends State<HierarchicalPage> {
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
               Color.fromARGB(255, 239, 245, 200),
@@ -102,7 +105,7 @@ class _HierarchicalPageState extends State<HierarchicalPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Column(
                     children: [
@@ -127,7 +130,7 @@ class _HierarchicalPageState extends State<HierarchicalPage> {
                 ),
                 _buildRoleCard(
                   'Managing Director',
-                  Color.fromARGB(255, 119, 41, 8),
+                  const Color.fromARGB(255, 119, 41, 8),
                   Icons.person,
                   isMobile,
                 ),
@@ -172,7 +175,7 @@ class _HierarchicalPageState extends State<HierarchicalPage> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: iconColor, width: 2),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.black12,
             blurRadius: 4,
@@ -215,7 +218,7 @@ class _HierarchicalPageState extends State<HierarchicalPage> {
       height: 30,
       width: 2,
       color: Colors.grey,
-      margin: EdgeInsets.symmetric(vertical: 6),
+      margin: const EdgeInsets.symmetric(vertical: 6),
     );
   }
 
@@ -282,7 +285,7 @@ class _HierarchicalPageState extends State<HierarchicalPage> {
           },
           child: _buildRoleCard(
             displayTeamName,
-            Color.fromARGB(255, 77, 10, 231),
+            const Color.fromARGB(255, 77, 10, 231),
             Icons.group,
             isMobile,
           ),
@@ -338,7 +341,7 @@ class _HierarchicalPageState extends State<HierarchicalPage> {
           contentPadding: EdgeInsets.zero,
           content: Container(
             decoration: BoxDecoration(
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 colors: [
                   Color.fromARGB(255, 232, 241, 242),
                   Color.fromARGB(255, 245, 200, 200),
@@ -347,7 +350,7 @@ class _HierarchicalPageState extends State<HierarchicalPage> {
                 end: Alignment.bottomRight,
               ),
               borderRadius: BorderRadius.circular(15.0),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   color: Colors.black26,
                   blurRadius: 10,
@@ -367,32 +370,40 @@ class _HierarchicalPageState extends State<HierarchicalPage> {
                     color: Colors.brown,
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Text(
                   teamName,
                   style: TextStyle(
                     fontSize: isMobile ? 16 : 20,
                     fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 119, 41, 8),
+                    color: const Color.fromARGB(255, 119, 41, 8),
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 ...members.map((member) {
-                  return Card(
-                    elevation: 3,
-                    child: ListTile(
-                      leading: Icon(Icons.person,
-                          color: Color.fromARGB(255, 119, 41, 8)),
-                      title: Text(
-                        member,
-                        style: TextStyle(fontSize: isMobile ? 14 : 18),
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            const EmployeeProfileAndProgressPage(),
+                      ));
+                    },
+                    child: Card(
+                      elevation: 3,
+                      child: ListTile(
+                        leading: const Icon(Icons.person,
+                            color: Color.fromARGB(255, 119, 41, 8)),
+                        title: Text(
+                          member,
+                          style: TextStyle(fontSize: isMobile ? 14 : 18),
+                        ),
                       ),
                     ),
                   );
-                }).toList(),
-                SizedBox(height: 16),
+                }),
+                const SizedBox(height: 16),
                 TextButton(
-                  child: Text(
+                  child: const Text(
                     'Close',
                     style: TextStyle(
                       color: Colors.brown,
@@ -411,16 +422,18 @@ class _HierarchicalPageState extends State<HierarchicalPage> {
     );
   }
 
-  Widget _buildDrawerItem(IconData icon, String title, Widget targetPage) {
+  Widget _buildDrawerItem(IconData icon, String title, Widget destinationPage) {
     return ListTile(
-      leading: Icon(icon),
-      title: Text(title),
+      leading: Icon(icon, color: reddishBrown),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: reddishBrown,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
       onTap: () {
-        Navigator.of(context).pop(); // Close the drawer
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => targetPage),
-        );
+        Navigator.pushNamed(context, '/teamprofile');
       },
     );
   }
